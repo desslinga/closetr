@@ -32,11 +32,11 @@ button.
 outfitClothingList: an object list, where each key-value pair is a Clothing
 object for the today's outfit.
 
-closetList: an object list, consisting of all the user's clothing.
+closetList: an array consisting of all the user's clothing.
 
 editMode: boolean to indicate whether or not it is edit mode.
 
-searchText: the input value of the search bar (inputted by user).
+searchText: the input value of the search bar (entered by user.)
 
 currentUser: the user that is logged in.
 
@@ -45,7 +45,7 @@ creating the POST request to save today's outfit entry.
 */
 export class LogOutfitComponent implements OnInit {
   outfitClothingList: any;
-  closetList: any;
+  closetList: Array<Clothing>;
   editMode : boolean = false;
   searchText: String;
   currentUser: User;
@@ -107,8 +107,8 @@ export class LogOutfitComponent implements OnInit {
   /*
   Adds clothing selected from search results to the outfit clothing list.
   First, it checks if clothing to be added is already in the outfit clothing
-  list (and doesn't add it, if so). After clothing has been added, it
-  retrieves all outfit clothing to refresh the list.
+  list (and doesn't add it, if so). After clothing has been added, then all
+  outfit clothing are retrieved to refresh the outfit clothing list.
   */
   addSearchResult(clothing: any): void {
     if (!this.outfitClothingListContains(clothing)) {
