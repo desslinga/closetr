@@ -17,6 +17,32 @@ import { ClosetFactory } from '../../../factories/closet.factory';
   templateUrl: './log-outfit.component.html'
 })
 
+/*
+Page for logging a user's outfit for today. Contains a search bar where users
+can search for items in their closet, to add to today's outfit. Outfit clothing
+can also be added manually, using the 'add manually' button to be redirected
+to the Add Clothing page.
+
+Clothing that have been added for today's outfit are listed in card format
+below the search bar. Once clothing have been added to an outfit entry, they
+can be removed via clicking the 'edit' (pencil) icon, and then clicking the 'x'
+next to the clothing card. To exit edit mode, a user would click the 'save'
+button.
+
+outfitClothingList: an object list, where each key-value pair is a Clothing
+object for the today's outfit.
+
+closetList: an object list, consisting of all the user's clothing.
+
+editMode: boolean to indicate whether or not it is edit mode.
+
+searchText: the input value of the search bar (inputted by user).
+
+currentUser: the user that is logged in.
+
+params: a parameter object containing user id, and date, to be used for
+creating the POST request to save today's outfit entry.
+*/
 export class LogOutfitComponent implements OnInit {
   outfitClothingList: any;
   closetList: any;
@@ -32,6 +58,12 @@ export class LogOutfitComponent implements OnInit {
               private routesService: RoutesService,
               private dateFormatService: DateFormatService) { }
 
+  /*
+  Initial data loading: retrieve the currently logged in user, and then get
+  that user's closet. If there is a user logged in, then create the params
+  object with that user's id, and today's date. Finally, we retrive all clothing
+  that have been entered for today's outfit so far.
+  */
   ngOnInit() {
     this.currentUser = this.authenticationService.currentUserValue;
     this.getAllClothes();
