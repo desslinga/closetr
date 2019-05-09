@@ -76,10 +76,21 @@ export class LogOutfitComponent implements OnInit {
     this.getAllOutfitClothes(this.params);
   }
 
+  /*
+  Toggles edit mode on and off.
+  */
   toggleEditMode = (): boolean => this.editMode = !this.editMode;
 
+  /*
+  Temporary functionality: triggers toggleEditMode.
+  */
   save = (): boolean => this.toggleEditMode();
 
+  /*
+  Navigates to Add Clothing page (triggered by 'add manually' button). Sets
+  previous url, so that the destination page can navigate back to Log Outfit
+  page.
+  */
   navTo = (): void => {
     this.routesService.setPrevUrl('/log-outfit');
     this.router.navigate(['/add-clothing']);
@@ -95,15 +106,13 @@ export class LogOutfitComponent implements OnInit {
 
   /*
   Adds clothing selected from search results to the outfit clothing list.
+  First, it checks if clothing to be added is already in the outfit clothing
+  list (and doesn't add it, if so). After clothing has been added, it
+  retrieves all outfit clothing to refresh the list.
   */
   addSearchResult(clothing: any): void {
-    // check if clothing to be added is already in outfit clothing list
     if (!this.outfitClothingListContains(clothing)) {
-      const params = {
-        clothingID: clothing.clothingID,
-        userID: this.currentUser.id,
-        date: this.dateFormatService.formatDateString(new Date())
-      };
+      const params = { ...this.params, clothingID: clothing.clothingID };
       this.addOutfitClothing(params);
       this.getAllOutfitClothes(this.params);
     }
