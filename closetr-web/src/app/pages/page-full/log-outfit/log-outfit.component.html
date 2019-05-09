@@ -82,7 +82,7 @@
           class="closet-card-item"
           [clothing]="clothing.value.clothing"
           [editMode]="editMode"
-          (removeCardEmit)="removeCard(clothing.value)"
+          (removeCardEmit)="deleteOutfitClothing(clothing.value.outfitEntryID)"
         ></app-closet-card>
       </div>
     </div>

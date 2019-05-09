@@ -118,26 +118,48 @@ export class LogOutfitComponent implements OnInit {
     }
   }
 
-  removeCard = (outfitEntry: any): Observable<any> =>
-    this.deleteOutfitClothing(outfitEntry.outfitEntryID);
-
+  /*
+  Input: outfit clothing entry ID
+  Removes outfit clothing from outfit entry via making a POST request.
+  Afterwards, the outfit clothing list is refreshed to account for the removed
+  outfit clothing.
+  */
   deleteOutfitClothing = (outfitEntryID: any): Observable<any> =>
     this.subscribeAndGetAllOutfitClothes(
-      this.logOutfitService.deleteOutfitClothing(outfitEntryID)
-    );
+      this.logOutfitService.deleteOutfitClothing(outfitEntryID));
 
+  /*
+  Input: outfit entry object (generic for now)
+  Adds outfit clothing to today's outfit entry via making a POST request.
+  Afterwards, the outfit clothing list is refreshed to account for the added
+  outfit clothing.
+  */
   addOutfitClothing = (params: any): Observable<any> =>
     this.subscribeAndGetAllOutfitClothes(
-      this.logOutfitService.addOutfitClothing(params)
-    );
+      this.logOutfitService.addOutfitClothing(params));
 
+  /*
+  Input: param object containing user id and date.
+  Retrieves outfit entry (list of Clothing) for the given user and date via
+  making a GET request.
+  */
   getAllOutfitClothes = (params: any): Observable<any> =>
     this.logOutfitService.getAllOutfitClothes(params).subscribe(
-      (data: any) => this.outfitClothingList = data
-    );
+      (data: any) => this.outfitClothingList = data);
 
+  /*
+  Retrieves all clothing items belonging to the current user, and stores them
+  in the closetList variable.
+  */
   getAllClothes = (): Observable<any> => ClosetFactory.getAllClothes(this);
 
+  /*
+  Input: function that returns an Observable result from an http request.
+  HTTP request helper for log outfit component functions. It takes the provided
+  api call and subscribes to its observable result. When data is recieved from
+  the observable, it retrieves all outfit clothing to refresh the list
+  according to changes made by the given api call.
+  */
   subscribeAndGetAllOutfitClothes = (apiCall: any): Observable<any> =>
     apiCall.subscribe((data: any) => this.getAllOutfitClothes(this.params));
 
