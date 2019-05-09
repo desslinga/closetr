@@ -14,6 +14,33 @@ import { ClosetFactory } from '../../../factories/closet.factory';
   templateUrl: './closet-manage.component.html'
 })
 
+/*
+Page for a user to view clothing items in their closet. Clothing items are
+displayed in card format; each card having a picture and short description.
+There is a search bar for users to filter through their closet, as well as
+additional filter/sort options to adjust how clothing is displayed.
+
+Page is defaulted to view mode, where user can look at clothing cards, and
+use the search bar to filter. Clicking the 'edit' (pencil) icon enables edit
+mode, which enables 'edit' and 'close' functions on each clothing card.
+Clicking the 'edit' button on a clothing card will navigate the user to the
+Edit Clothing page. Edit mode can be exited via clicking the 'save' button.
+
+User may add a new clothing item by clicking the 'add new' button, where they
+will be redirected to the Add Clothing page.
+
+closetList: an array consisting of all the user's clothing.
+
+editMode: boolean to indicate whether or not it is edit mode.
+
+searchText: the input value of the search bar (entered by user.)
+
+currentUser: the user that is logged in.
+
+filterOptions: an array of filter options shown in the filter selector.
+
+sortOptions: an array of sorting options shown in the sort selector.
+*/
 export class ClosetManageComponent implements OnInit {
   closetList: Array<Clothing>;
   editMode : boolean = false;
@@ -22,33 +49,6 @@ export class ClosetManageComponent implements OnInit {
   filterOptions: Array<string>;
   sortOptions: Array<string>;
 
-  /*
-  Page for a user to view clothing items in their closet. Clothing items are
-  displayed in card format; each card having a picture and short description.
-  There is a search bar for users to filter through their closet, as well as
-  additional filter/sort options to adjust how clothing is displayed.
-
-  Page is defaulted to view mode, where user can look at clothing cards, and
-  use the search bar to filter. Clicking the 'edit' (pencil) icon enables edit
-  mode, which enables 'edit' and 'close' functions on each clothing card.
-  Clicking the 'edit' button on a clothing card will navigate the user to the
-  Edit Clothing page. Edit mode can be exited via clicking the 'save' button.
-
-  User may add a new clothing item by clicking the 'add new' button, where they
-  will be redirected to the Add Clothing page.
-
-  closetList: an array consisting of all the user's clothing.
-
-  editMode: boolean to indicate whether or not it is edit mode.
-
-  searchText: the input value of the search bar (entered by user.)
-
-  currentUser: the user that is logged in.
-
-  filterOptions: an array of filter options shown in the filter selector.
-
-  sortOptions: an array of sorting options shown in the sort selector.
-  */
   constructor(private closetService: ClosetService,
               private router: Router,
               private routesService: RoutesService,
