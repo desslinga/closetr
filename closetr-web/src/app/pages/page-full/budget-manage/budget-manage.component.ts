@@ -6,63 +6,45 @@ import { Component, OnInit } from '@angular/core';
 })
 export class BudgetManageComponent implements OnInit {
   availableBudgetSpans: Array<string>;
-  allBudgetSpans: Array<string>;
-  selectedBudgetSpans: any;
-  selectedBudgetSpansArr: Array<string>;
-  selectedBudgetSpan: string;
-  budgetSettings: any;
-  editMode: boolean;
-
-  constructor() {
-    this.allBudgetSpans = [
-      'select',
-      'week',
-      'two weeks',
-      'month',
-      '6 months',
-      'year'
-    ];
-
-    this.selectedBudgetSpansArr = [
-      'month'
-    ];
-
-    this.selectedBudgetSpans = {
-      'month': {
-        'amount': 200,
-        'rollover': false
-      }
+  allBudgetSpans: Array<string> = [
+    'select',
+    'week',
+    'two weeks',
+    'month',
+    '6 months',
+    'year'
+  ];
+  selectedBudgetSpans: any = {
+    'month': {
+      'amount': 200,
+      'rollover': false
     }
+  };
+  selectedBudgetSpan: string = 'select';
+  editMode: boolean = false;
 
-    this.selectedBudgetSpan = 'select';
-    this.editMode = false;
-  }
+  constructor() { }
 
   ngOnInit() {
-    // take availableBudgetSpans as differences between all date ranges
-    // and selected date ranges.
-    this.availableBudgetSpans = this.allBudgetSpans.filter(
-      budgetSpan => !this.selectedBudgetSpansArr.includes(budgetSpan)
-    );
+    this.getAvailableBudgetSpans();
   }
 
   addBudgetSpan(budgetSpan: string): void {
-    this.selectedBudgetSpansArr.push(budgetSpan);
-
-    this.availableBudgetSpans = this.allBudgetSpans.filter(
-      budgetSpan => !this.selectedBudgetSpansArr.includes(budgetSpan)
-    );
-
     this.selectedBudgetSpans[budgetSpan] = {
       'amount': 100,
       'rollover': false
     }
-
+    this.getAvailableBudgetSpans();
     this.selectedBudgetSpan = 'select';
   }
 
-  toggleEditMode(): void {
-    this.editMode = !this.editMode;
-  }
+  /*
+  Toggles edit mode on and off.
+  */
+  toggleEditMode = (): boolean => this.editMode = !this.editMode;
+
+  getAvailableBudgetSpans = (): Array<string> => this.availableBudgetSpans =
+    this.allBudgetSpans.filter(budgetSpan =>
+      !Object.keys(this.selectedBudgetSpans).includes(budgetSpan));
 
 }
