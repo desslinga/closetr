@@ -21,8 +21,17 @@ a new account has been created, the page redirects back to the Login page.
 The Register page can only be accessed if there is no user logged in. There is
 also a link to the Login page (the 'log in' button.)
 
-fields: object containing each field in the register form (name, username,
+fields: object containing each field value in the register form (name, username,
 password, and passwordConfirm.)
+
+errors: object containing each error message for each field in the register
+form (name, username, password, and passwordConfirm.)
+
+userExists: boolean indicating whether or not the username that is requested
+already exists.
+
+show: boolean to indicate if register page should be displayed (false if
+there is a user logged in.)
 */
 export class RegisterComponent implements OnInit {
   fields: any = {
@@ -37,35 +46,43 @@ export class RegisterComponent implements OnInit {
     password: '',
     passwordConfirm: ''
   };
-  enableLogin: boolean = false;
   userExists: boolean = false;
   show: boolean = false;
+  enableRegister: boolean = false;
+
   constructor(private router: Router,
               private userService: UserService,
               private authenticationService: AuthenticationService) { }
 
+  /*
+  Initial data loading: show the page (by toggling show variable.) Checks if
+  there is a user already logged in -- if so, then navigate to the dashboard.
+  */
   ngOnInit() {
-    this.resetErrors();
     this.show = true;
     (this.authenticationService.currentUserValue
       && this.router.navigate(['/dashboard']));
   }
 
-  checkEnableRegister(): boolean {
+  /*
+  Called whenever there are changes to any fields on the form. Checks that
+  all the fields are filled, and that the password is equal to passwordConfirm.
+  If the above criteria is met, then it returns true (false otherwise.)
+  */
+  checkEnableRegister = (): void => {
     const { name, username, password, passwordConfirm } = this.fields;
     let result = !(name.length == 0
         || username.length == 0
         || password.length == 0
         || passwordConfirm.length == 0
         || (password!= passwordConfirm));
-    return result;
+    this.enableRegister = result;
   }
 
-  registerChangeHandler(): void {
-    this.userExists = false;
-    this.checkError();
-  }
-
+  /*
+  Called whenever there are changes to any fields on the form. Resets all
+  previously displayed error messages.
+  */
   resetErrors(): void {
     this.errors = {
       name: '',
@@ -75,6 +92,12 @@ export class RegisterComponent implements OnInit {
     };
   }
 
+  /*
+  Called whenever there are changes to any fields on the form. Checks if there
+  should be an error displayed on the confirm password field. An error will
+  be displayed if both password and the password confirm fields are filled, but
+  they are not the same.
+  */
   checkErrorPasswordConfirm(): void {
     const { password, passwordConfirm } = this.fields;
     if (password.length != 0
@@ -114,12 +137,14 @@ export class RegisterComponent implements OnInit {
     }
   }
 
-  checkError(): void {
+  registerChangeHandler = (): void => {
+    this.userExists = false;
     this.resetErrors();
     this.checkErrorPasswordConfirm();
     this.checkErrorPassword();
     this.checkErrorUsername();
     this.checkErrorName();
+    this.checkEnableRegister();
   }
 
   toSignIn(): void {

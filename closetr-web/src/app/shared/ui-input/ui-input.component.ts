@@ -5,15 +5,15 @@ import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
   templateUrl: './ui-input.component.html'
 })
 export class UiInputComponent implements OnInit {
-  @Input() labelText: string;
-  @Input() type: string;
-  @Input() rows: number;
-  @Input() inputModel: any;
-  @Input() placeholder: string;
+  @Input() labelText: string = '';
+  @Input() type: string = '';
+  @Input() rows: number = 0;
+  @Input() inputModel: any = null;
+  @Input() placeholder: string = '';
   @Output() inputModelChange: EventEmitter<any> = new EventEmitter<any>();
-  @Input() errorMessage: string;
-  @Input() showError: boolean;
-  @Input() disabled: boolean;
+  @Input() errorMessage: string = '';
+  @Input() showError: boolean = false;
+  @Input() disabled: boolean = false;
 
   constructor() { }
 
