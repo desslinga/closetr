@@ -107,6 +107,12 @@ export class RegisterComponent implements OnInit {
      }
   }
 
+  /*
+  Called whenever there are changes to any fields on the form. Checks if there
+  should be an error displayed on the password field. An error will be
+  displayed if the confirm password field has been filled, but the password
+  field is still empty.
+  */
   checkErrorPassword(): void {
     const { password, passwordConfirm } = this.fields;
     if (password.length == 0
@@ -115,6 +121,13 @@ export class RegisterComponent implements OnInit {
     }
   }
 
+  /*
+  Called whenever there are changes to any fields on the form. Checks if there
+  should be an error displayed on the username field. An error will be
+  displayed if either of the password, or confirm password fields are filled,
+  but the username field is still empty. It will also display an error if
+  the user has attempted to register with a username that is already taken.
+  */
   checkErrorUsername(): void {
     const { username, password, passwordConfirm } = this.fields;
     if ((password.length != 0
@@ -127,6 +140,12 @@ export class RegisterComponent implements OnInit {
     }
   }
 
+  /*
+  Called whenever there are changes to any fields on the form. Checks if there
+  should be an error displayed on the name field. An error will be displayed if
+  either of the username, password, or confirm password fields are filled, but
+  the username field is still empty.
+  */
   checkErrorName(): void {
     const { username, password, passwordConfirm } = this.fields;
     if ((username.length != 0
@@ -137,6 +156,12 @@ export class RegisterComponent implements OnInit {
     }
   }
 
+  /*
+  Called whenever there are changes to any fields on the form. Resets any error
+  messages. Runs all of the validators on each field (for confirm password,
+  password, username, and name fields.) Then, it checks if the user should be
+  able to register (clicking the 'register' button.)
+  */
   registerChangeHandler = (): void => {
     this.userExists = false;
     this.resetErrors();
@@ -147,10 +172,21 @@ export class RegisterComponent implements OnInit {
     this.checkEnableRegister();
   }
 
+  /*
+  Called when the user clicks the 'sign in' button. Navigates the user to the
+  Login page.
+  */
   toSignIn(): void {
     this.router.navigate(['/login']);
   }
 
+  /*
+  Called when the user clicks the 'sign up' button. Creates a parameter object
+  that contains user credentials of the user to be created. Then, the user
+  service's register method is used to create a POST request with the new user.
+  If the request succeeds, then the user is navigated to the dashboard.
+  Otherwise, the screen is updated with any error messages to be attended to.
+  */
   register = (): void => {
     this.userExists = false;
     const { name, username, password } = this.fields;
