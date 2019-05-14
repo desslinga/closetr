@@ -8,17 +8,38 @@ import { AuthenticationService } from '../../../services/authentication.service'
   selector: 'app-register',
   templateUrl: './register.component.html'
 })
+/*
+Page containing the sign up screen, where the user can create a new account.
+Contains a form with name, username, password, and confirm password fields.
+Form has UI validation, with error messages displayed under each field that
+requires user attention. If user doesn't have an account yet, they may fill out
+the form with credentials they wish to sign up with. Upon clicking 'sign up',
+the data entered will be validated. The username requested by the visitor is
+checked (if such a username already exists, then an erorr is displayed.) After
+a new account has been created, the page redirects back to the Login page.
+
+The Register page can only be accessed if there is no user logged in. There is
+also a link to the Login page (the 'log in' button.)
+
+fields: object containing each field in the register form (name, username,
+password, and passwordConfirm.)
+*/
 export class RegisterComponent implements OnInit {
-  name: string = "";
-  username: string = "";
-  password: string = "";
-  passwordConfirm: string ="";
+  fields: any = {
+    name: '',
+    username: '',
+    password: '',
+    passwordConfirm: ''
+  };
+  errors: any = {
+    name: '',
+    username: '',
+    password: '',
+    passwordConfirm: ''
+  };
   enableLogin: boolean = false;
   userExists: boolean = false;
   show: boolean = false;
-  errorMessage: any = {};
-  error: any = { };
-
   constructor(private router: Router,
               private userService: UserService,
               private authenticationService: AuthenticationService) { }
@@ -31,11 +52,12 @@ export class RegisterComponent implements OnInit {
   }
 
   checkEnableRegister(): boolean {
-    let result = !(this.name.length == 0
-        || this.username.length == 0
-        || this.password.length == 0
-        || this.passwordConfirm.length == 0
-        || (this.password != this.passwordConfirm));
+    const { username, password, passwordConfirm } = this.fields;
+    let result = !(name.length == 0
+        || username.length == 0
+        || password.length == 0
+        || passwordConfirm.length == 0
+        || (password!= passwordConfirm));
     return result;
   }
 
@@ -45,57 +67,50 @@ export class RegisterComponent implements OnInit {
   }
 
   resetErrors(): void {
-    this.errorMessage = {
-      'name':'',
-      'username':'',
-      'password':'',
-      'passwordConfirm':''
-    };
-    this.error = {
-      'name': false,
-      'username': false,
-      'password': false,
-      'passwordConfirm': false
+    this.errors = {
+      name: '',
+      username: '',
+      password: '',
+      passwordConfirm: ''
     };
   }
 
   checkErrorPasswordConfirm(): void {
-    if (this.password.length != 0
-        && this.passwordConfirm.length != 0
-        && this.password != this.passwordConfirm) {
-          this.errorMessage.passwordConfirm = 'passwords are not the same.';
-          this.error.passwordConfirm = true;
+    const { password, passwordConfirm } = this.fields;
+    if (password.length != 0
+        && passwordConfirm.length != 0
+        && password != passwordConfirm) {
+          this.errors.passwordConfirm = 'passwords are not the same.';
      }
   }
 
   checkErrorPassword(): void {
-    if (this.password.length == 0
-        && this.passwordConfirm.length != 0) {
-          this.errorMessage.password = 'password is required.'
-          this.error.password = true;
+    const { password, passwordConfirm } = this.fields;
+    if (password.length == 0
+        && passwordConfirm.length != 0) {
+          this.errors.password = 'password is required.'
     }
   }
 
   checkErrorUsername(): void {
-    if ((this.password.length != 0
-        || this.passwordConfirm.length != 0)
-        && this.username.length == 0) {
-          this.errorMessage.username = 'username is required.'
-          this.error.username = true;
+    const { username, password } = this.fields;
+    if ((password.length != 0
+        || passwordConfirm.length != 0)
+        && username.length == 0) {
+          this.errors.username = 'username is required.'
     }
     if (this.userExists) {
-      this.errorMessage.username = 'user with that username already exists.';
-      this.error.username = true;
+      this.errors.username = 'user with that username already exists.';
     }
   }
 
   checkErrorName(): void {
-    if ((this.username.length != 0
-         || this.password.length != 0
-         || this.passwordConfirm.length != 0)
-        && (this.name.length == 0)) {
-          this.errorMessage.name = 'name is required.';
-          this.error.name = true;
+    const { username, password, passwordConfirm } = this.fields;
+    if ((username.length != 0
+         || password.length != 0
+         || passwordConfirm.length != 0)
+        && (name.length == 0)) {
+          this.errors.name = 'name is required.';
     }
   }
 
@@ -113,10 +128,11 @@ export class RegisterComponent implements OnInit {
 
   register = (): void => {
     this.userExists = false;
+    const { name, username, password } = this.fields;
     var params = {
-      userName: this.name,
-      userID: this.username,
-      userPassword: this.password
+      userName: name,
+      userID: username,
+      userPassword: password
     }
     this.userService.register(new User(params)).subscribe(
       (data: any) => {
