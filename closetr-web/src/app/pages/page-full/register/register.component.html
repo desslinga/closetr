@@ -15,11 +15,11 @@
                class="mtb-10-13"
                [labelText]="'name'"
                [type]="'text'"
-               [(inputModel)]="name"
+               [(inputModel)]="fields.name"
                [placeholder]="'Name'"
                (inputModelChange)="registerChangeHandler()"
-               [errorMessage]="errorMessage.name"
-               [showError]="error.name"
+               [errorMessage]="errors.name"
+               [showError]="errors.name"
              ></ui-input>
            </div>
            <div class='col-12'>
@@ -28,11 +28,11 @@
                class="mtb-10-13"
                [labelText]="'username'"
                [type]="'username'"
-               [(inputModel)]="username"
+               [(inputModel)]="fields.username"
                [placeholder]="'Username'"
                (inputModelChange)="registerChangeHandler()"
-               [errorMessage]="errorMessage.username"
-               [showError]="error.username"
+               [errorMessage]="errors.username"
+               [showError]="errors.username"
              ></ui-input>
            </div>
            <div class='col-12'>
@@ -41,11 +41,11 @@
                class="mtb-10-13"
                [labelText]="'password'"
                [type]="'password'"
-               [(inputModel)]="password"
+               [(inputModel)]="fields.password"
                [placeholder]="'Password'"
                (inputModelChange)="registerChangeHandler()"
-               [errorMessage]="errorMessage.password"
-               [showError]="error.password"
+               [errorMessage]="errors.password"
+               [showError]="errors.password"
              ></ui-input>
            </div>
            <div class='col-12'>
@@ -54,11 +54,11 @@
                class="mtb-10-13"
                [labelText]="'confirm password'"
                [type]="'password'"
-               [(inputModel)]="passwordConfirm"
+               [(inputModel)]="fields.passwordConfirm"
                [placeholder]="'Confirm Password'"
                (inputModelChange)="registerChangeHandler()"
-               [errorMessage]="errorMessage.passwordConfirm"
-               [showError]="error.passwordConfirm"
+               [errorMessage]="errors.passwordConfirm"
+               [showError]="errors.passwordConfirm"
              ></ui-input>
            </div>
            <div class='col-12'>

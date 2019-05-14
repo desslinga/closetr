@@ -52,7 +52,7 @@ export class RegisterComponent implements OnInit {
   }
 
   checkEnableRegister(): boolean {
-    const { username, password, passwordConfirm } = this.fields;
+    const { name, username, password, passwordConfirm } = this.fields;
     let result = !(name.length == 0
         || username.length == 0
         || password.length == 0
@@ -93,7 +93,7 @@ export class RegisterComponent implements OnInit {
   }
 
   checkErrorUsername(): void {
-    const { username, password } = this.fields;
+    const { username, password, passwordConfirm } = this.fields;
     if ((password.length != 0
         || passwordConfirm.length != 0)
         && username.length == 0) {
