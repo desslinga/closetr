@@ -27,8 +27,8 @@ password: the input value of the password field (entered by user.)
 enableLogin: boolean to indicate whether or not 'log in' button should be
 enabled.
 
-showLoginError: boolean to indicate whether or not error messages should be
-displayed on the username/password fields.
+errorMessage: the error message showing a login error, to be displayed
+under the password field.
 
 show: boolean to indicate whether or not login page should be displayed.
 */
@@ -36,7 +36,7 @@ export class LoginComponent implements OnInit {
   username: string = '';
   password: string = '';
   enableLogin: boolean = false;
-  showLoginError: boolean = false;
+  errorMessage: string = "";
   show : boolean = false;
 
   constructor(private router: Router,
@@ -59,7 +59,7 @@ export class LoginComponent implements OnInit {
   (false otherwise).
   */
   loginChangeHandler = (): void => {
-    this.showLoginError = false;
+    this.errorMessage = '';
     this.enableLogin = !(this.username.length == 0 || this.password.length == 0);
   }
 
@@ -76,14 +76,14 @@ export class LoginComponent implements OnInit {
   the dashboard. Otherwise, appropriate errors are shown on the fields.
   */
   login(): void {
-    this.showLoginError = false;
+    this.errorMessage = '';
     const loginData = { userID: this.username, userPassword: this.password };
     this.authenticationService.login(loginData)
       .subscribe(data => {
         if (data) {
           this.router.navigate(['/dashboard']);
         } else {
-          this.showLoginError = true;
+          this.errorMessage = "username or password doesn\'t match our records.";
         }
      });
   }

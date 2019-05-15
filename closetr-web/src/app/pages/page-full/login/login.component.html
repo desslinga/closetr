@@ -15,7 +15,7 @@
                [(inputModel)]="username"
                [placeholder]="'Username'"
                (inputModelChange)="loginChangeHandler()"
-               [showError]="showLoginError"
+               [showError]="errorMessage !== ''"
              ></ui-input>
            </div>
            <div class='col-12'>
@@ -27,8 +27,8 @@
                [(inputModel)]="password"
                [placeholder]="'Password'"
                (inputModelChange)="loginChangeHandler()"
-               [errorMessage]="'username or password doesn\'t match our records.'"
-               [showError]="showLoginError"
+               [errorMessage]="errorMessage"
+               [showError]="errorMessage !== ''"
              ></ui-input>
            </div>
            <div class='col-12 mtb-15'>
