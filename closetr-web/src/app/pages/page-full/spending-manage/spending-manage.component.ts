@@ -70,10 +70,19 @@ export class SpendingManageComponent implements OnInit {
   */
   ngOnInit() {
     this.currentUser = this.authenticationService.currentUserValue;
-    this.getAllClothes();
+    ClosetFactory.getAllClothes(this)
     this.searchCriteriaChangeHandler();
   }
 
+  /*
+  Called whenever there are changed to the date range selectors, and updates
+  the search criteria object to accurately represent the chosen date range.
+  If the selector is for a date range (two selectors: one for date from, and
+  another for date to), then the date from and date to properties are updated
+  based on their formatted counterparts. If the selector is for a date range
+  up to today (one selector), then the date range properties, along with their
+  formatted counterparts, are updated to reflect that date range.
+  */
   searchCriteriaChangeHandler(): void {
     const {
       newDate, formatStringDate, formatDateString
@@ -97,7 +106,5 @@ export class SpendingManageComponent implements OnInit {
       this.searchCriteria.dateToFormatted = formatDateString(dateTo);
     }
   }
-
-  getAllClothes = (): Observable<any> => ClosetFactory.getAllClothes(this);
 
 }
