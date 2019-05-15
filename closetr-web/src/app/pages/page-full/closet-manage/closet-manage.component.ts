@@ -52,20 +52,20 @@ export class ClosetManageComponent implements OnInit {
   constructor(private closetService: ClosetService,
               private router: Router,
               private routesService: RoutesService,
-              private authenticationService: AuthenticationService) {
-    ({
-      filterOptions: this.filterOptions,
-      sortOptions: this.sortOptions
-    } = this.closetService);
-  }
+              private authenticationService: AuthenticationService) { }
 
   /*
   Initial data loading: retrieve the currently logged in user, and then get
-  that user's closet.
+  that user's closet. Then get retrieve the filter and sort options from the
+  closet service.
   */
   ngOnInit() {
     this.currentUser = this.authenticationService.currentUserValue;
     ClosetFactory.getAllClothes(this);
+    ({
+      filterOptions: this.filterOptions,
+      sortOptions: this.sortOptions
+    } = this.closetService);
   }
 
   /*
