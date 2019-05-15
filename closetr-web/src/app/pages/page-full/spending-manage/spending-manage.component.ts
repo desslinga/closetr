@@ -40,7 +40,6 @@ export class SpendingManageComponent implements OnInit {
   closetList: Array<Clothing>;
   isDateRange: boolean = false;
   searchCriteria: any;
-  filterCriteria: any;
   availableDateRange: any = [
     'last week',
     'last two weeks',
@@ -53,17 +52,22 @@ export class SpendingManageComponent implements OnInit {
   constructor(private closetService: ClosetService,
               private dateFormatService: DateFormatService,
               private authenticationService: AuthenticationService) {
-
+    const { newDate, formatDateString } = this.dateFormatService;
     this.searchCriteria = {
       property: "clothingPurchaseDate",
       dateRangeFor: "last month",
-      dateFrom: this.dateFormatService.newDate(),
-      dateTo: this.dateFormatService.newDate(),
-      dateFromFormatted: this.dateFormatService.formatDateString(new Date()),
-      dateToFormatted: this.dateFormatService.formatDateString(new Date())
+      dateFrom: newDate(),
+      dateTo: newDate(),
+      dateFromFormatted: formatDateString(new Date()),
+      dateToFormatted: formatDateString(new Date())
     };
   }
 
+  /*
+  Initial data loading: retrieve the currently logged in user, and get that
+  user's closet. Update the search criteria object to accurately represent
+  the default setting (last month.)
+  */
   ngOnInit() {
     this.currentUser = this.authenticationService.currentUserValue;
     this.getAllClothes();
@@ -71,33 +75,27 @@ export class SpendingManageComponent implements OnInit {
   }
 
   searchCriteriaChangeHandler(): void {
+    const {
+      newDate, formatStringDate, formatDateString
+    } = this.dateFormatService;
+    const {
+      dateFromFormatted, dateToFormatted, dateFrom, dateTo, dateRangeFor,
+      dateRangeForFrom
+    } = this.searchCriteria;
+
     if (this.isDateRange) {
       // choosing date range: turn string format to date object.
-      this.searchCriteria.dateFrom = this.dateFormatService
-        .formatStringDate(this.searchCriteria.dateFromFormatted);
-      this.searchCriteria.dateTo = this.dateFormatService
-        .formatStringDate(this.searchCriteria.dateToFormatted);
+      this.searchCriteria.dateFrom = formatStringDate(dateFromFormatted);
+      this.searchCriteria.dateTo = formatStringDate(dateToFormatted);
     } else {
       // choosing date range up to today:
       // set date objects, then set string format from date objects.
-      this.searchCriteria.dateFrom = this.dateFormatService
-        .dateRangeForFrom(this.searchCriteria.dateRangeFor);
+      this.searchCriteria.dateFrom = dateRangeForFrom(dateRangeFor);
       this.searchCriteria.dateTo = this.dateFormatService.newDate();
 
-      this.searchCriteria.dateFromFormatted = this.dateFormatService
-        .formatDateString(this.searchCriteria.dateFrom);
-      this.searchCriteria.dateToFormatted = this.dateFormatService
-        .formatDateString(this.searchCriteria.dateTo);
-
+      this.searchCriteria.dateFromFormatted = formatDateString(dateFrom);
+      this.searchCriteria.dateToFormatted = formatDateString(dateTo);
     }
-    this.updateFilterCriteria();
-  }
-
-  updateFilterCriteria(): void {
-    this.filterCriteria = {
-      dateFrom: this.searchCriteria.dateFrom,
-      dateTo: this.searchCriteria.dateTo
-    };
   }
 
   getAllClothes = (): Observable<any> => ClosetFactory.getAllClothes(this);

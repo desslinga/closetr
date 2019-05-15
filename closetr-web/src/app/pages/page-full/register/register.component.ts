@@ -144,10 +144,10 @@ export class RegisterComponent implements OnInit {
   Called whenever there are changes to any fields on the form. Checks if there
   should be an error displayed on the name field. An error will be displayed if
   either of the username, password, or confirm password fields are filled, but
-  the username field is still empty.
+  the name field is still empty.
   */
   checkErrorName(): void {
-    const { username, password, passwordConfirm } = this.fields;
+    const { name, username, password, passwordConfirm } = this.fields;
     if ((username.length != 0
          || password.length != 0
          || passwordConfirm.length != 0)
@@ -201,7 +201,7 @@ export class RegisterComponent implements OnInit {
           this.router.navigate(['/dashboard']);
         } else {
           this.userExists = true;
-          this.checkError();
+          this.registerChangeHandler();
         }
       }, error => {}
     );
