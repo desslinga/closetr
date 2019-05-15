@@ -24,9 +24,9 @@ export class UiCloseButtonComponent implements OnInit {
   @Input() type: string = 'button';
   @Input() hidden: boolean = false;
   @Input() size: string = 'lg';
+
   constructor() { }
 
-  ngOnInit() {
-  }
+  ngOnInit() { }
 
 }
