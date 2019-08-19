@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
-const users_model = require('./users.model');
+const { users } = require('@models');
 const rh = require('@common/result_handling');
 const async_mongo = require('@common/async_mongo');
 
@@ -11,7 +11,7 @@ async function update_user_info (req, res, next) {
   try {
     let decoded = await wt.verify(user.token, 'secret');
     req.decoded = decoded;
-    let user_from_db = await users_model.findOneAndUpdate({userID: req_user.userID},
+    let user_from_db = await users.findOneAndUpdate({userID: req_user.userID},
       { $set: {userName: req_user.userName, userDesc: req_user.userDesc}},
       {upsert: true, new: true, runValidators: true});
     const user_payload = {
@@ -40,7 +40,7 @@ async function register_new_user(req, res, next) {
   let error = '', status = '';
 
   try {
-    let user_list = await users_model.find({userID: user.userID});
+    let user_list = await users.find({userID: user.userID});
     if (user_list.length != 0) {
       const result_json = {
         status: 'failed',
@@ -50,7 +50,7 @@ async function register_new_user(req, res, next) {
     }
 
     newItem['_id'] = mongoose.Types.ObjectId();
-    let new_user = await async_mongo.findOneAndUpdate(users_model, newItem);
+    let new_user = await async_mongo.findOneAndUpdate(users, newItem);
     const token = jwt.sign({id: doc._id}, 'secret', {expiresIn: 86400});
     const result_json = register_get_success_json(new_user, token)
     res.json(result_json);
@@ -87,7 +87,7 @@ matches a pair in the database. */
 async function check_login_credentials(req, res, next) {
   let user = req.body.user;
   try {
-    let users_from_db = await users_model.find({userID: user.userID})
+    let users_from_db = await users.find({userID: user.userID})
 
     if(password_is_valid(users_from_db)) {
       const user_obj = users_from_db[0]

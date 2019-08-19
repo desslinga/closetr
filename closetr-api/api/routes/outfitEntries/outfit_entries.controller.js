@@ -1,5 +1,4 @@
-const outfit_entries_model = require('./outfit_entries.model');
-const clothes_model = require('../clothes/clothes.model');
+const { outfitEntries } = require('@models');
 const mongoose = require('mongoose');
 const rh = require('@common/result_handling');
 const async_mongo = require('@common/async_mongo');
@@ -9,7 +8,7 @@ async function add_new_entry(req, res, next) {
   const new_entry = create_entry_from_request(entry_request);
 
   try {
-    let payload = await async_mongo.findOneAndUpdate(outfit_entries_model, new_entry);
+    let payload = await async_mongo.findOneAndUpdate(outfitEntries, new_entry);
       const result_json = rh.return_success(payload);
       res.json(result_json);
   } catch (err) {
@@ -39,7 +38,7 @@ function create_entry_from_request(entry_request) {
 async function delete_entry(req, res, next) {
   const id = req.params.id;
   try {
-    let payload = await outfit_entries_model.remove({_id: id});
+    let payload = await outfitEntries.remove({_id: id});
     const result_json = rh.return_success(payload);
     res.json(result_json);
   } catch (err) {
@@ -52,7 +51,7 @@ async function get_entry(req, res, next) {
   const criteria = req.query;
   let clothes;
   try {
-    let outfit_entries = await outfit_entries_model
+    let outfit_entries = await outfitEntries
       .find({user: criteria.userID, date: criteria.date})
       .populate('clothing')
       .populate({path: 'user', select: 'userID _id'}).exec();
