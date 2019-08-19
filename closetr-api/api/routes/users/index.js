@@ -1,9 +1,13 @@
 const express = require('express');
-const users_controller = require('./users.controller');
+const {
+    checkLoginCreds,
+    updateUserInfo,
+    registerNewUser
+} = require('./controllers');
 
 const router = express.Router();
-router.post('/login', users_controller.check_login_credentials);
-router.post('/update', users_controller.update_user_info);
-router.post('/register', users_controller.register_new_user);
+router.post('/login', checkLoginCreds);
+router.post('/update', updateUserInfo);
+router.post('/register', registerNewUser);
 
 module.exports = router;

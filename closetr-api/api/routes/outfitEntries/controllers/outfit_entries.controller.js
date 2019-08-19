@@ -3,7 +3,7 @@ const mongoose = require('mongoose');
 const rh = require('@common/result_handling');
 const async_mongo = require('@common/async_mongo');
 
-async function add_new_entry(req, res, next) {
+async function add_new_entry(req, res) {
   const entry_request = req.body;
   const new_entry = create_entry_from_request(entry_request);
 
@@ -25,7 +25,6 @@ function create_entry_from_request(entry_request) {
     outfitEntryID: entry_request.outfitEntryID
   };
 
-  // assigning id
   if(entry_request.outfitEntryID == null){
     new_entry['_id'] = mongoose.Types.ObjectId();
   } else {
@@ -35,7 +34,7 @@ function create_entry_from_request(entry_request) {
   return new_entry;
 }
 
-async function delete_entry(req, res, next) {
+async function delete_entry(req, res) {
   const id = req.params.id;
   try {
     let payload = await outfitEntries.remove({_id: id});
@@ -47,7 +46,7 @@ async function delete_entry(req, res, next) {
   }
 }
 
-async function get_entry(req, res, next) {
+async function get_entry(req, res) {
   const criteria = req.query;
   let clothes;
   try {
@@ -64,18 +63,17 @@ async function get_entry(req, res, next) {
   }
 }
 
-function db_to_payload_entries(outfit_entries) {
-  let outfit_entry_payload = {
+const db_to_payload_entries = (outfit_entries) => {
+  return {
     outfitEntryID: outfit_entries._id,
     user: outfit_entries.user,
     clothing: outfit_entries.clothing,
     date: outfit_entries.date
   };
-  return outfit_entry_payload;
-}
+};
 
 module.exports = {
   add_new_entry,
   get_entry,
   delete_entry
-}
+};
