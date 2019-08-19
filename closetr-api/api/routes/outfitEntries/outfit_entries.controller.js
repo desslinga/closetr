@@ -5,7 +5,6 @@ const rh = require('@common/result_handling');
 const async_mongo = require('@common/async_mongo');
 
 async function add_new_entry(req, res, next) {
-  // gather attributes
   const entry_request = req.body;
   const new_entry = create_entry_from_request(entry_request);
 
@@ -53,7 +52,8 @@ async function get_entry(req, res, next) {
   const criteria = req.query;
   let clothes;
   try {
-    let outfit_entries = await outfit_entries_model.find({user: criteria.userID, date: criteria.date})
+    let outfit_entries = await outfit_entries_model
+      .find({user: criteria.userID, date: criteria.date})
       .populate('clothing')
       .populate({path: 'user', select: 'userID _id'}).exec();
     let outfit_entries_payload = clothes.map(db_to_payload_entries);
@@ -75,10 +75,8 @@ function db_to_payload_entries(outfit_entries) {
   return outfit_entry_payload;
 }
 
-var outfit_entries_module = {
+module.exports = {
   add_new_entry,
   get_entry,
   delete_entry
 }
-
-module.exports = outfit_entries_module;

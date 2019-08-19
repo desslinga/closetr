@@ -1,6 +1,9 @@
-module.exports = (req, res, next) => {
-    res.json({
-        status: 200,
-        message: 'Welcome to the Closetr API!',
+const { main } = require('@requestHandlers');
+
+module.exports = (req, res) => main(req, res)
+    .then(data => {
+        res.status(data.status).send(data.message);
+    })
+    .catch(error => {
+        res.status(error.status).send(error.message);
     });
-}

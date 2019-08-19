@@ -5,5 +5,6 @@ moduleAlias.addAlias('@common', path.join(__dirname, '/../common'));
 moduleAlias.addAlias('@routes', path.join(__dirname, '/../api/routes'));
 moduleAlias.addAlias('@api', path.join(__dirname, '/../api'));
 moduleAlias.addAlias('@db', path.join(__dirname, '/../api/db'));
+moduleAlias.addAlias('@requestHandlers', path.join(__dirname, '/../api/requestHandlers'));
 moduleAlias.addAlias('@config', path.join(__dirname, '/./'));
 moduleAlias.addAlias('@utils', path.join(__dirname, '/../utils'));

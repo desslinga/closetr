@@ -5,9 +5,7 @@ const users_model = require('./users.model');
 const rh = require('@common/result_handling');
 const async_mongo = require('@common/async_mongo');
 
-/* API updates one user */
 async function update_user_info (req, res, next) {
-  // gather attributes from request
   const req_user = req.body.user;
 
   try {
@@ -32,7 +30,6 @@ async function update_user_info (req, res, next) {
   }
 }
 
-/* API sets one new user clothing */
 async function register_new_user(req, res, next) {
   let user = req.body.user;
   const newItem = {
@@ -44,7 +41,6 @@ async function register_new_user(req, res, next) {
 
   try {
     let user_list = await users_model.find({userID: user.userID});
-    // check if the user already exists
     if (user_list.length != 0) {
       const result_json = {
         status: 'failed',
@@ -53,7 +49,6 @@ async function register_new_user(req, res, next) {
       res.json(result_json);
     }
 
-    // add new if if user did not already exist
     newItem['_id'] = mongoose.Types.ObjectId();
     let new_user = await async_mongo.findOneAndUpdate(users_model, newItem);
     const token = jwt.sign({id: doc._id}, 'secret', {expiresIn: 86400});
@@ -148,10 +143,8 @@ function create_user_payload(user_document, token_payload) {
   return user_payload;
 }
 
-var users_module = {
+module.exports = {
   update_user_info: update_user_info,
   register_new_user: register_new_user,
   check_login_credentials: check_login_credentials
-}
-
-module.exports = users_module;
+};

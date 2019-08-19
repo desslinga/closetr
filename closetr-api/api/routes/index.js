@@ -1,7 +1,7 @@
 const mainRouter = require('./main');
 const clothesRouter = require('./users');
 const usersRouter = require('./clothes');
-const outfitEntriesRouter = require('./outfit_entries');
+const outfitEntriesRouter = require('./outfitEntries');
 
 const endpoints = {
   main: '/',
